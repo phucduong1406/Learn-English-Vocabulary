@@ -1,22 +1,17 @@
 package itute.phucduong.engvocabularylearning;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.ArrayList;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,8 +19,10 @@ public class MainActivity extends AppCompatActivity
     // Chọn từ điển EV-VE
     MenuItem menuSetting;
 
+
+
     DictFragment dictFragment;
-    StarFragment starFragment;
+    BookmarkFragment bookmarkFragment;
 
 
     DetailFragment detailFragment;
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 
 
         dictFragment = new DictFragment();
-        starFragment = new StarFragment();
+        bookmarkFragment = new BookmarkFragment();
 
         detailFragment = new DetailFragment();
 
@@ -64,10 +61,30 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        starFragment.setOnFragmentListener(new FragmentListener() {
+        bookmarkFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
                 goToFragment(DetailFragment.getNewInstance(value), false);
+            }
+        });
+
+
+        // Filter
+        EditText edit_search = findViewById(R.id.edit_search);
+        edit_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                dictFragment.filterValue(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
     }
@@ -140,7 +157,7 @@ public class MainActivity extends AppCompatActivity
 
         else if (id == R.id.nav_star) {
             // Handle the star words action
-            goToFragment(starFragment, false);
+            goToFragment(bookmarkFragment, false);
 
         }
 

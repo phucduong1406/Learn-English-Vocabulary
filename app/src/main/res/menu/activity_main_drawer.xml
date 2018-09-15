@@ -10,15 +10,15 @@
             android:title="Dictionary" />
         <item
             android:id="@+id/nav_star"
-            android:icon="@drawable/ic_star"
+            android:icon="@drawable/ic_star_fill"
             android:title="Favorite words" />
         <item
             android:id="@+id/nav_recent"
-            android:icon="@drawable/ic_recent"
+            android:icon="@drawable/ic_time"
             android:title="Recent words" />
         <item
             android:id="@+id/nav_person"
-            android:icon="@drawable/ic_person"
+            android:icon="@drawable/ic_book"
             android:title="My words" />
     </group>
 
@@ -26,11 +26,11 @@
         <menu>
             <item
                 android:id="@+id/nav_remind"
-                android:icon="@drawable/ic_update"
+                android:icon="@drawable/ic_calendar"
                 android:title="Remind" />
             <item
                 android:id="@+id/nav_lang"
-                android:icon="@drawable/ic_language"
+                android:icon="@drawable/ic_earth_globe"
                 android:title="Languages" />
         </menu>
     </item>
@@ -39,15 +39,15 @@
         <menu>
             <item
                 android:id="@+id/nav_rate"
-                android:icon="@drawable/ic_thumb_up"
+                android:icon="@drawable/ic_like"
                 android:title="Rate" />
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_question"
                 android:title="Help" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/ic_info"
+                android:icon="@drawable/ic_information"
                 android:title="About" />
         </menu>
     </item>

@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:ignore="Deprecated">
+
+    <ListView
+        android:id="@+id/bookmarkList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/btnPractice"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_margin="15dp"
+        android:layout_weight="0"
+        android:background="@drawable/practice_btn"
+        android:text="@string/practice"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold" />
+
+
+</LinearLayout>
