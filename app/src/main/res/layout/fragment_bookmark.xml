@@ -6,6 +6,13 @@
     android:orientation="vertical"
     tools:ignore="Deprecated">
 
+    <Button
+        android:id="@+id/btnA"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Button" />
+
     <ListView
         android:id="@+id/bookmarkList"
         android:layout_width="match_parent"
@@ -24,7 +31,8 @@
         android:text="@string/practice"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
         android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+          />
 
 
 </LinearLayout>

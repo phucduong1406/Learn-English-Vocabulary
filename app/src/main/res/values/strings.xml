@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Eng Vocabulary Learning</string>
+    <string name="app_name">English Vocabulary</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -10,8 +10,12 @@
     <string name="vietnamese_english">Vietnamese - English</string>
     <string name="ev">English - Vietnamese</string>
     <string name="ve">Vietnamese - English</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="practice">Practice</string>
+    <string name="select_language">Select language:</string>
+    <string name="english">English</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="clear_all">Clear all</string>
+    <string name="search">search</string>
+    <string name="speech_prompt">Say something…</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\\'t support speech input</string>
 </resources>

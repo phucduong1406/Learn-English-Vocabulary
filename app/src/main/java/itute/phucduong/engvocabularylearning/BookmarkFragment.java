@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -104,6 +106,11 @@ public class BookmarkFragment extends Fragment {
 
     public void setOnFragmentListener(FragmentListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.clear, menu);
     }
 
 }

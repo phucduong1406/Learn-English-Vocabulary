@@ -19,15 +19,33 @@
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:contentInsetStartWithNavigation="0dp">
 
-            <EditText
-                android:id="@+id/edit_search"
-                android:layout_width="match_parent"
+
+            <RelativeLayout android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableLeft="@drawable/ic_search"
-                android:drawableRight="@drawable/ic_voice"
-                android:drawablePadding="8dp"
-                android:hint="Search"
-                android:padding="0dp" />
+                android:padding="8dp">
+
+                <EditText android:id="@+id/edit_search"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:drawableStart="@drawable/ic_search"
+                    android:paddingRight="40dp"
+                    android:hint="@string/search" />
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="21dp"
+                    android:layout_height="22dp"
+                    android:layout_alignBottom="@+id/edit_search"
+                    android:layout_alignRight="@+id/edit_search"
+                    android:layout_marginBottom="14dp"
+                    android:background="@drawable/ic_voice"
+                    android:onClick="speakButtonClicked"/>
+
+            </RelativeLayout>
+
+
+
 
         </android.support.v7.widget.Toolbar>
 

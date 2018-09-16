@@ -1,6 +1,12 @@
 package itute.phucduong.engvocabularylearning;
 
+import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,9 +15,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -19,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     // Chọn từ điển EV-VE
     MenuItem menuSetting;
 
+    MenuItem menuSearchVoice;
+    Toolbar toolbar;
 
 
     DictFragment dictFragment;
@@ -27,13 +48,20 @@ public class MainActivity extends AppCompatActivity
 
     DetailFragment detailFragment;
 
+
+    EditText txtSpeechInput;
+    Button btnSpeak;
+    private static final int REQUEST_CODE = 1234;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        // Add the button that opens the navigation drawer
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,7 +97,10 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-        // Filter
+        /**
+        ** Search: Filter text
+        **/
+
         EditText edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -87,6 +118,42 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+
+        /**
+        ** Search: Speech to text
+        **/
+
+        final Button speak = findViewById(R.id.btnSearch);
+        txtSpeechInput = (EditText) this.findViewById(R.id.edit_search);
+
+        // Disable button if no recognition service is present
+        PackageManager pm = getPackageManager();
+        List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+        if (activities.size() == 0) {
+            speak.setEnabled(false);
+            speak.setText("Recognizer not present");
+        }
+        txtSpeechInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // TODO Auto-generated method stub
+                speak.setEnabled(false);
+            }
+        });
+
+
+
     }
 
     @Override
@@ -103,6 +170,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
+
+
         getMenuInflater().inflate(R.menu.main, menu);
         menuSetting = menu.findItem(R.id.action_settings);
 
@@ -140,6 +210,11 @@ public class MainActivity extends AppCompatActivity
                 //dictionaryFragment.resetDataSource(source);
                 menuSetting.setIcon(getDrawable(R.drawable.ve_white));  // Set icon VE
             }
+
+
+            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -161,8 +236,15 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        else if (id == R.id.nav_recent) {
+        else if (id == R.id.nav_lang) {
+            Dialog dialog = new Dialog(MainActivity.this);
+            dialog.setContentView(R.layout.dialog_language);
+            dialog.show();
+        }
 
+        else if (id == R.id.nav_about) {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
         }
 
 
@@ -170,6 +252,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     // Replace fragment
     void goToFragment(android.support.v4.app.Fragment fragment, boolean isTop) {
@@ -180,5 +263,52 @@ public class MainActivity extends AppCompatActivity
         if (!isTop)
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    // Prepare menu dictionary type
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getClass().getSimpleName();
+        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
+            menuSetting.setVisible(false);
+            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
+            toolbar.setTitle("Favorite words");
+        } else {
+            menuSetting.setVisible(true);
+            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
+            toolbar.setTitle("");
+        }
+        return true;
+    }
+
+
+
+
+
+
+    /** The function was performed on 16/9/2018 by Phuc Duong */
+
+    // Handle the action of the button being clicked
+    public void speakButtonClicked(View v)
+    {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    // Handle the results from the voice recognition activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // Populate the wordsList with the String values the recognition engine thought it heard
+            final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!matches.isEmpty()) {
+                String Query = matches.get(0);
+                txtSpeechInput.setText(Query);
+                btnSpeak.setEnabled(false);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
