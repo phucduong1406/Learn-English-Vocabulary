@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +26,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     Button btnSpeak;
     private static final int REQUEST_CODE = 1234;
 
+
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +161,28 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
+
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, Qorld!");
+
+
+
+
+
+        // Get a DatabaseReference
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
+        mDatabase.child("Name").setValue("Duong Hong Phuc");
+
+        Student s = new Student("Tran Kim Hoang", 1997, "Q9");
+        mDatabase.child("Student").setValue(s);
     }
 
     @Override
