@@ -17,14 +17,24 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class DictFragment extends Fragment {
 
     private FragmentListener listener;  // Declare a variable for this listener in fragment
+    ArrayAdapter<String> adapter;
 
     ListView dictList;
-    ArrayAdapter<String> adapter;
+
+    private ArrayList<String> mSource = new ArrayList<String>();
+
+    DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
     public DictFragment() {
         // Required empty public constructor
@@ -37,10 +47,11 @@ public class DictFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dict, container, false);
+
+
     }
 
     @Override
@@ -49,46 +60,50 @@ public class DictFragment extends Fragment {
 
         // Lấy danh sách dictionary
         dictList = view.findViewById(R.id.dictList);
-
-        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getListofWords());
+        mSource = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, mSource);
         dictList.setAdapter(adapter);
-        dictList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        mData.child("Dictionary").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(listener!= null) listener.onItemClick(getListofWords()[position]);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
+                mSource.add(dictionary.word);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-    }
+        dictList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                if (listener != null)
+                    listener.onItemClick(mSource.get(position));
+            }
+        });
 
 
-    String[] getListofWords () {
-        String[] source = new String[] {
-                "abandon",
-                "accept",
-                "access",
-                "add",
-                "all",
-                "and",
-                "apple",
-                "baby",
-                "ball",
-                "bag",
-                "banana",
-                "bold",
-                "button",
-                "cat",
-                "cut",
-                "danger",
-                "elevator",
-                "food",
-                "good",
-                "house",
-                "ink",
-                "juice"
-        };
-        return source;
     }
+
 
 
     // Filter

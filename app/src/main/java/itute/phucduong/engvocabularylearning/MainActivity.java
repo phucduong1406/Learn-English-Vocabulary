@@ -7,6 +7,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     // Chọn từ điển EV-VE
     MenuItem menuSetting;
 
-    MenuItem menuSearchVoice;
+
     Toolbar toolbar;
 
 
@@ -53,18 +57,29 @@ public class MainActivity extends AppCompatActivity
 
     DetailFragment detailFragment;
 
+    ImageButton btnHear;
+
+    TextView textWord;
+    TextToSpeech toSpeech;
+
 
     EditText txtSpeechInput;
     Button btnSpeak;
     private static final int REQUEST_CODE = 1234;
 
 
-    DatabaseReference mDatabase;
+    DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+//        // Push database
+//        Dictionary dictionary = new Dictionary("assurance","sự chắc chắn",false,false,false);
+//        mData.child("Dictionary").push().setValue(dictionary);
+
 
         // Add the button that opens the navigation drawer
         toolbar = findViewById(R.id.toolbar);
@@ -92,14 +107,20 @@ public class MainActivity extends AppCompatActivity
         dictFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
-                goToFragment(detailFragment, false);
+                String id = Global.getState(MainActivity.this, "dic_type");
+                int dicType = id == null ? R.id.action_ev : Integer.valueOf(id);
+                goToFragment(DetailFragment.getNewInstance(value,  dicType), false);
+
+
             }
         });
 
         bookmarkFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
-                goToFragment(DetailFragment.getNewInstance(value), false);
+                String id = Global.getState(MainActivity.this, "dic_type");
+                int dicType = id == null ? R.id.action_ev : Integer.valueOf(id);
+                goToFragment(DetailFragment.getNewInstance(value,  dicType), false);
             }
         });
 
@@ -108,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         ** Search: Filter text
         **/
 
-        EditText edit_search = findViewById(R.id.edit_search);
+        final EditText edit_search = findViewById(R.id.edit_search);
         edit_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -159,30 +180,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-
-
-
-
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, Qorld!");
-
-
-
-
-
-        // Get a DatabaseReference
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-        mDatabase.child("Name").setValue("Duong Hong Phuc");
-
-        Student s = new Student("Tran Kim Hoang", 1997, "Q9");
-        mDatabase.child("Student").setValue(s);
     }
 
     @Override
@@ -315,6 +312,10 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
+
+
     /** The function was performed on 16/9/2018 by Phuc Duong */
 
     // Handle the action of the button being clicked
@@ -329,15 +330,19 @@ public class MainActivity extends AppCompatActivity
     // Handle the results from the voice recognition activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // Populate the wordsList with the String values the recognition engine thought it heard
-            final ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (!matches.isEmpty()) {
-                String Query = matches.get(0);
-                txtSpeechInput.setText(Query);
-                btnSpeak.setEnabled(false);
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    txtSpeechInput.setText(result.get(0));
+                }
+                break;
+            }
+
+        }
     }
 }

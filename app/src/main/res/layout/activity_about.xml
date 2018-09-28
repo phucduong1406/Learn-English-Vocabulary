@@ -67,4 +67,14 @@
         android:layout_marginTop="5dp"
         android:text="2. Đào Thị Phượng - 15110289"
         android:textColor="@android:color/background_dark" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingTop="20dp"
+        android:text="Nguồn từ điển sử dụng: Laban dictionary, Vdict"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="12sp"
+        android:textStyle="italic" />
 </LinearLayout>

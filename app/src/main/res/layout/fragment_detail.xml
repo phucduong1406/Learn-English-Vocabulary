@@ -3,13 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:background="@android:color/background_light"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@android:color/background_light">
+    android:padding="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:elevation="1.46dp">
 
         <TextView
@@ -18,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="fill_vertical"
-            android:text="Word"
+            android:text=""
             android:textColor="@color/colorRed"
             android:textColorLink="@color/colorRed"
             android:textSize="24sp"
@@ -31,10 +36,14 @@
             android:layout_gravity="center_vertical"
             android:background="?actionBarItemBackground"
             android:gravity="fill_vertical"
-            android:src="@drawable/ic_volume_up" />
+            android:src="@drawable/ic_volume_up"
+
+            />
+
+        <!--android:onClick="hearPronunciation"-->
 
         <ImageButton
-            android:id="@+id/btnBookmark"
+            android:id="@+id/btnVoice"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"
@@ -43,7 +52,7 @@
             android:src="@drawable/ic_voice_black" />
 
         <ImageButton
-            android:id="@+id/btnVoice"
+            android:id="@+id/btnBookmark"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"
@@ -55,13 +64,16 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/background_light">
+        android:background="@android:color/background_light"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <WebView
             android:id="@+id/textWordTranslate"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/background_light"
-            android:text="Hello" />
+            android:text="" />
     </ScrollView>
 </LinearLayout>

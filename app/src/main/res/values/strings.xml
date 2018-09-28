@@ -10,7 +10,7 @@
     <string name="vietnamese_english">Vietnamese - English</string>
     <string name="ev">English - Vietnamese</string>
     <string name="ve">Vietnamese - English</string>
-    <string name="practice">Practice</string>
+    <string name="game">Game</string>
     <string name="select_language">Select language:</string>
     <string name="english">English</string>
     <string name="vietnamese">Vietnamese</string>
@@ -18,4 +18,5 @@
     <string name="search">search</string>
     <string name="speech_prompt">Say something…</string>
     <string name="speech_not_supported">Sorry! Your device doesn\\'t support speech input</string>
+    <string name="review">Review</string>
 </resources>

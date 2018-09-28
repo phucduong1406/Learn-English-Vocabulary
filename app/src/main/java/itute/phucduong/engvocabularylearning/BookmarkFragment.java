@@ -2,19 +2,39 @@ package itute.phucduong.engvocabularylearning;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+
 public class BookmarkFragment extends Fragment {
 
+    ListView bookmarkList;
+    MenuItem menuClear;
+
     private FragmentListener listener;  // Declare a variable for this listener in fragment
+    ArrayAdapter<String> adapter;
+
+    private ArrayList<String> mSource = new ArrayList<String>();
+
+    DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
     public BookmarkFragment() {
         // Required empty public constructor
@@ -39,60 +59,56 @@ public class BookmarkFragment extends Fragment {
         //
         setHasOptionsMenu(true);
 
-        // Lấy danh sách bookmark
-        ListView bookmarkList = view.findViewById(R.id.bookmarkList);
-        final BookmarkAdapter adapter = new BookmarkAdapter(getActivity(), getListofWords());
+        // Lấy danh sách favorite
+
+        bookmarkList = view.findViewById(R.id.bookmarkList);
+        mSource = new ArrayList<String>();
+        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, mSource);
         bookmarkList.setAdapter(adapter);
 
-        adapter.setOnItemClick(new ListItemListener() {
+        mData.child("Dictionary").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onItemClick(int position) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
+                if(dictionary.favorite_word)
+                    mSource.add(dictionary.word);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        bookmarkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (listener != null)
-                    listener.onItemClick(String.valueOf(adapter.getItem(position)));
+                    listener.onItemClick(mSource.get(position));
             }
         });
 
-        adapter.setOnItemDeleteClick(new ListItemListener() {
-            @Override
-            public void onItemClick(int position) {
-                String value = String.valueOf(adapter.getItem(position));
-                Toast.makeText(getContext(), value + " is deleted", Toast.LENGTH_SHORT).show();
 
-            }
-        });
+
+
 
     }
-
-
-    String[] getListofWords () {
-        String[] source = new String[] {
-                "abandon",
-                "accept",
-                "access",
-                "add",
-                "all",
-                "and",
-                "apple",
-                "baby",
-                "ball",
-                "bag",
-                "banana",
-                "bold",
-                "button",
-                "cat",
-                "cut",
-                "danger",
-                "elevator",
-                "food",
-                "good",
-                "house",
-                "ink",
-                "juice"
-        };
-        return source;
-    }
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -111,6 +127,9 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.clear, menu);
+
     }
+
+
 
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/game_white_btn"
+    <item android:drawable="@drawable/button_game_click"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/game_white_btn"
+    <item android:drawable="@drawable/button_game_click"
         android:state_focused="true" />
-    <item android:drawable="@drawable/game_blue_btn" />
+    <item android:drawable="@drawable/button_game" />
 </selector>
