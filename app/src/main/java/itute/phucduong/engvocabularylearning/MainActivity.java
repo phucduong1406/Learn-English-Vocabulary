@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
+
+
         /**
          * Push database
         Dictionary dictionary = new Dictionary("assurance","sự chắc chắn","sự chắc chắn","",false,false,false);
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity
         // Add the button that opens the navigation drawer
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,7 +102,22 @@ public class MainActivity extends AppCompatActivity
         emptyFragment = new EmptyFragment();
         topicFragment = new TopicFragment();
 
-        goToFragment(dictFragment, true);
+        goToFragment(bookmarkFragment, true);
+
+
+        dictFragment.setOnFragmentListener(new FragmentListener() {
+            @Override
+            public void onItemClick(String value) {
+                goToFragment(DetailFragment.getNewInstance(value), false);
+            }
+        });
+
+        bookmarkFragment.setOnFragmentListener(new FragmentListener() {
+            @Override
+            public void onItemClick(String value) {
+                goToFragment(DetailFragment.getNewInstance(value), false);
+            }
+        });
 
 
 

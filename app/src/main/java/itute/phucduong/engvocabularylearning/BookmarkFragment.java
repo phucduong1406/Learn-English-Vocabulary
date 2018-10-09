@@ -62,7 +62,6 @@ public class BookmarkFragment extends Fragment {
         setHasOptionsMenu(true);
 
         // Lấy danh sách favorite
-
         bookmarkList = view.findViewById(R.id.bookmarkList);
         mSource = new ArrayList<String>();
         adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, mSource);
@@ -138,7 +137,7 @@ public class BookmarkFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    // Option menu dict type (EV, VE)
+    // Option menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

@@ -34,11 +34,8 @@ public class TopicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
 
-//        topicFragment = new TopicFragment();
-//        goToFragment(topicFragment, true);
 
-
-
+        /** Topic use LIstview */
         ListView topicList = findViewById(R.id.topicList);
         mSource = new ArrayList<Topic>();
         adapter = new TopicListAdapter(this, mSource);
@@ -73,19 +70,5 @@ public class TopicActivity extends AppCompatActivity {
 
             }
         });
-
-
-    }
-
-
-
-    void goToFragment(Fragment fragment, boolean isTop) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.fragment_topic, fragment);
-        if (!isTop)
-            fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
     }
 }

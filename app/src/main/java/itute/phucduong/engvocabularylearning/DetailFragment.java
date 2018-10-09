@@ -50,11 +50,9 @@ public class DetailFragment extends Fragment {
     }
 
     //
-    public static DetailFragment getNewInstance(String value, int dicType) {
+    public static DetailFragment getNewInstance(String value) {
         DetailFragment fragment = new DetailFragment();
         fragment.value = value;
-
-        fragment.mDicType = dicType;
         return fragment;
     }
 
@@ -129,7 +127,7 @@ public class DetailFragment extends Fragment {
                 assert dictionary != null;
                 if (value.equals(dictionary.word)) {
                     textWord.setText(value);
-                    textMean.loadDataWithBaseURL(null, dictionary.mean, "text/html", "utf-8", null);
+                    textMean.loadDataWithBaseURL(null, dictionary.detail, "text/html", "utf-8", null);
 
                     // Set icon
                     int icon;
