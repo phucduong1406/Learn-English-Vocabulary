@@ -14,42 +14,4 @@
 
     </ListView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnReview"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            android:autoText="false"
-            android:background="@drawable/btn_review"
-            android:paddingLeft="65dp"
-            android:text="@string/review"
-            android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#10b24a"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnPractice"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_margin="15dp"
-            android:layout_weight="1"
-            android:background="@drawable/btn_game"
-            android:paddingLeft="65dp"
-            android:text="@string/game"
-            android:textAlignment="viewStart"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#1c70d3"
-            android:textStyle="bold" />
-    </LinearLayout>
-
 </LinearLayout>

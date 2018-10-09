@@ -17,6 +17,22 @@
     <string name="clear_all">Clear all</string>
     <string name="search">search</string>
     <string name="speech_prompt">Say something…</string>
-    <string name="speech_not_supported">Sorry! Your device doesn\\'t support speech input</string>
+    <string name="speech_not_supported">Sorry! Your device does not support speech input</string>
     <string name="review">Review</string>
+    <string name="action_practice">Practice</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="topic">Topic</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="favorite_words">Favorite words</string>
+    <string name="recent_words">Recent words</string>
+    <string name="my_words">My words</string>
+    <string name="settings">SETTINGS</string>
+    <string name="remind">Remind</string>
+    <string name="languages">Languages</string>
+    <string name="network">NETWORK</string>
+    <string name="rate">Rate</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
 </resources>

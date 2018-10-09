@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_practice"
+        android:icon="@drawable/more"
+        android:orderInCategory="100"
+        android:title="@string/action_practice"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/flashcard"
+                android:title="Flash card"
+                app:showAsAction="never"
+                android:icon="@drawable/ic_collections"/>
+            <item
+                android:id="@+id/writing"
+                android:title="Writing"
+                app:showAsAction="never"
+                android:icon="@drawable/ic_edit"/>
+            <item
+                android:id="@+id/speaking"
+                android:title="Speaking"
+                app:showAsAction="never"
+                android:icon="@drawable/ic_headset"/>
+            <item
+                android:id="@+id/test"
+                android:title="Test"
+                app:showAsAction="never"
+                android:icon="@drawable/ic_test"/>
+        </menu>
+    </item>
+</menu>

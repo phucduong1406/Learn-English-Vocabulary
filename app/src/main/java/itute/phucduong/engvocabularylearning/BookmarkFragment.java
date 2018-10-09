@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
 public class BookmarkFragment extends Fragment {
 
     ListView bookmarkList;
-    MenuItem menuClear;
+    MenuItem menuSetting;
 
     private FragmentListener listener;  // Declare a variable for this listener in fragment
     ArrayAdapter<String> adapter;
@@ -56,7 +58,7 @@ public class BookmarkFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //
+        // Notify the fragment that it should participate in options menu handling.
         setHasOptionsMenu(true);
 
         // Lấy danh sách favorite
@@ -126,10 +128,32 @@ public class BookmarkFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.clear, menu);
+        // TODO Add your menu entries here
 
+        // Clear current all the menu items
+        menu.clear();
+
+        // Add the new menu items
+        inflater.inflate(R.menu.practice, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    // Option menu dict type (EV, VE)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.flashcard:
+                return true;
+            case R.id.writing:
+                return true;
+            case R.id.speaking:
+                return true;
+            case R.id.test:
+                return true;
+            default:
+                break;
 
-
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

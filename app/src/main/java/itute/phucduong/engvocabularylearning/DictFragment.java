@@ -27,10 +27,10 @@ import java.util.ArrayList;
 
 public class DictFragment extends Fragment {
 
+    ListView dictList;
+
     private FragmentListener listener;  // Declare a variable for this listener in fragment
     ArrayAdapter<String> adapter;
-
-    ListView dictList;
 
     private ArrayList<String> mSource = new ArrayList<String>();
 
@@ -50,8 +50,6 @@ public class DictFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dict, container, false);
-
-
     }
 
     @Override

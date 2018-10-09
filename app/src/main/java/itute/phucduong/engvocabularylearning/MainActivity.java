@@ -11,6 +11,9 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -44,27 +47,20 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    // Chọn từ điển EV-VE
-    MenuItem menuSetting;
-
-
     Toolbar toolbar;
-
 
     DictFragment dictFragment;
     BookmarkFragment bookmarkFragment;
-
-
     DetailFragment detailFragment;
+    EmptyFragment emptyFragment;
+    TopicFragment topicFragment;
 
     ImageButton btnHear;
-
     TextView textWord;
     TextToSpeech toSpeech;
 
-
     EditText txtSpeechInput;
-    Button btnSpeak;
+
     private static final int REQUEST_CODE = 1234;
 
 
@@ -76,18 +72,19 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-//        // Push database
-//        Dictionary dictionary = new Dictionary("assurance","sự chắc chắn",false,false,false);
-//        mData.child("Dictionary").push().setValue(dictionary);
+        /**
+         * Push database
+        Dictionary dictionary = new Dictionary("assurance","sự chắc chắn","sự chắc chắn","",false,false,false);
+        mData.child("Dictionary").push().setValue(dictionary);*/
 
 
         // Add the button that opens the navigation drawer
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -95,34 +92,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         dictFragment = new DictFragment();
         bookmarkFragment = new BookmarkFragment();
-
         detailFragment = new DetailFragment();
+        emptyFragment = new EmptyFragment();
+        topicFragment = new TopicFragment();
 
         goToFragment(dictFragment, true);
 
-
-        dictFragment.setOnFragmentListener(new FragmentListener() {
-            @Override
-            public void onItemClick(String value) {
-                String id = Global.getState(MainActivity.this, "dic_type");
-                int dicType = id == null ? R.id.action_ev : Integer.valueOf(id);
-                goToFragment(DetailFragment.getNewInstance(value,  dicType), false);
-
-
-            }
-        });
-
-        bookmarkFragment.setOnFragmentListener(new FragmentListener() {
-            @Override
-            public void onItemClick(String value) {
-                String id = Global.getState(MainActivity.this, "dic_type");
-                int dicType = id == null ? R.id.action_ev : Integer.valueOf(id);
-                goToFragment(DetailFragment.getNewInstance(value,  dicType), false);
-            }
-        });
 
 
         /**
@@ -152,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         ** Search: Speech to text
         **/
 
-        final Button speak = findViewById(R.id.btnSearch);
+        final ImageButton speak = findViewById(R.id.btnSearch);
         txtSpeechInput = (EditText) this.findViewById(R.id.edit_search);
 
         // Disable button if no recognition service is present
@@ -160,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         List<ResolveInfo> activities = pm.queryIntentActivities(new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
         if (activities.size() == 0) {
             speak.setEnabled(false);
-            speak.setText("Recognizer not present");
+            //speak.setText("Recognizer not present");
         }
         txtSpeechInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -192,85 +169,35 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    // Menu dictionary type (EV, VE)
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-
-
-        getMenuInflater().inflate(R.menu.main, menu);
-        menuSetting = menu.findItem(R.id.action_settings);
-
-        // Lưu lại trạng thái từ điển đã chọn
-        String id = Global.getState(this, "dic_type");
-        if (id != null)
-            onOptionsItemSelected(menu.findItem(Integer.valueOf(id)));
-        else {
-
-            // Apply SQLite
-
-           /* ArrayList<String> source = dbHelper.getWord(R.id.action_ev);
-            dictionaryFragment.resetDataSource(source);    chua ne*/
-        }
-
-        return true;
-    }
-
-    // Option menu dict type (EV, VE)
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item != null) {
-            int id = item.getItemId();
-
-            if (R.id.action_settings == id) return true;
-
-            Global.saveState(this, "dic_type", String.valueOf(id));
-            /*ArrayList<String> source = dbHelper.getWord(id);     chua ne*/
-
-            // Đổi icon và lấy DB tương ứng khi chọn từ điển E-V, V-E
-            if (id == R.id.action_ev) {
-                //dictionaryFragment.resetDataSource(source);
-                menuSetting.setIcon(getDrawable(R.drawable.ev_white));  // Set icon EV
-            } else if (id == R.id.action_ve) {
-                //dictionaryFragment.resetDataSource(source);
-                menuSetting.setIcon(getDrawable(R.drawable.ve_white));  // Set icon VE
-            }
-
-
-            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_dict) {
-            // Handle the dictionary action
-            goToFragment(dictFragment, false);
-        }
-
-        else if (id == R.id.nav_star) {
-            // Handle the star words action
-            goToFragment(bookmarkFragment, false);
-
-        }
-
-        else if (id == R.id.nav_lang) {
-            Dialog dialog = new Dialog(MainActivity.this);
-            dialog.setContentView(R.layout.dialog_language);
-            dialog.show();
-        }
-
-        else if (id == R.id.nav_about) {
-            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
-            startActivity(intent);
+        Intent i;
+        switch (item.getItemId()) {
+            case R.id.nav_dict:
+                goToFragment(dictFragment, false);
+                break;
+            case R.id.nav_topic:
+                goToFragment(topicFragment, false);
+                break;
+            case R.id.nav_star:
+                goToFragment(bookmarkFragment, false);
+                break;
+            case R.id.nav_recent:
+                i = new Intent(MainActivity.this, TopicActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_lang:
+                Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setContentView(R.layout.dialog_language);
+                dialog.show();
+                break;
+            case R.id.nav_about:
+                i = new Intent(MainActivity.this, AboutActivity.class);
+                startActivity(i);
+                break;
         }
 
 
@@ -281,38 +208,15 @@ public class MainActivity extends AppCompatActivity
 
 
     // Replace fragment
-    void goToFragment(android.support.v4.app.Fragment fragment, boolean isTop) {
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    void goToFragment(Fragment fragment, boolean isTop) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         if (!isTop)
             fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-    // Prepare menu dictionary type
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        String activeFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container).getClass().getSimpleName();
-        if (activeFragment.equals(BookmarkFragment.class.getSimpleName())) {
-            menuSetting.setVisible(false);
-            toolbar.findViewById(R.id.edit_search).setVisibility(View.GONE);
-            toolbar.setTitle("Favorite words");
-        } else {
-            menuSetting.setVisible(true);
-            toolbar.findViewById(R.id.edit_search).setVisibility(View.VISIBLE);
-            toolbar.setTitle("");
-        }
-        return true;
-    }
-
-
-
-
-
-
-
 
 
 

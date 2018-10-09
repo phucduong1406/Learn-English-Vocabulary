@@ -111,7 +111,8 @@ public class DetailFragment extends Fragment {
 
 
 
-
+        // Notify the fragment that it should participate in options menu handling.
+        setHasOptionsMenu(true);
 
         btnHear = view.findViewById(R.id.btnHear);
         textWord = view.findViewById(R.id.textWord);

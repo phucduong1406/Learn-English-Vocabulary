@@ -7,48 +7,52 @@
         <item
             android:id="@+id/nav_dict"
             android:icon="@drawable/ic_magnifier"
-            android:title="Dictionary" />
+            android:title="@string/dictionary" />
+        <item
+            android:id="@+id/nav_topic"
+            android:icon="@drawable/ic_topic"
+            android:title="@string/topic" />
         <item
             android:id="@+id/nav_star"
             android:icon="@drawable/ic_star_fill"
-            android:title="Favorite words" />
+            android:title="@string/favorite_words" />
         <item
             android:id="@+id/nav_recent"
             android:icon="@drawable/ic_time"
-            android:title="Recent words" />
+            android:title="@string/recent_words" />
         <item
             android:id="@+id/nav_person"
             android:icon="@drawable/ic_book"
-            android:title="My words" />
+            android:title="@string/my_words" />
     </group>
 
-    <item android:title="SETTINGS">
+    <item android:title="@string/settings">
         <menu>
             <item
                 android:id="@+id/nav_remind"
                 android:icon="@drawable/ic_calendar"
-                android:title="Remind" />
+                android:title="@string/remind" />
             <item
                 android:id="@+id/nav_lang"
                 android:icon="@drawable/ic_earth_globe"
-                android:title="Languages" />
+                android:title="@string/languages" />
         </menu>
     </item>
 
-    <item android:title="NETWORK">
+    <item android:title="@string/network">
         <menu>
             <item
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_like"
-                android:title="Rate" />
+                android:title="@string/rate" />
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_question"
-                android:title="Help" />
+                android:title="@string/help" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_information"
-                android:title="About" />
+                android:title="@string/about" />
         </menu>
     </item>
 
