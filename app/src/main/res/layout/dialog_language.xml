@@ -22,12 +22,14 @@
             android:id="@+id/radioEng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="@string/english" />
 
         <RadioButton
             android:id="@+id/radioVie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:text="@string/vietnamese" />
 
     </RadioGroup>
