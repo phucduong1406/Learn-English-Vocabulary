@@ -12,22 +12,22 @@
                 android:id="@+id/flashcard"
                 android:title="Flash card"
                 app:showAsAction="never"
-                android:icon="@drawable/ic_collections"/>
+                android:icon="@drawable/image"/>
             <item
                 android:id="@+id/writing"
                 android:title="Writing"
                 app:showAsAction="never"
-                android:icon="@drawable/ic_edit"/>
+                android:icon="@drawable/document"/>
             <item
                 android:id="@+id/speaking"
                 android:title="Speaking"
                 app:showAsAction="never"
-                android:icon="@drawable/ic_headset"/>
+                android:icon="@drawable/listen"/>
             <item
                 android:id="@+id/test"
                 android:title="Test"
                 app:showAsAction="never"
-                android:icon="@drawable/ic_test"/>
+                android:icon="@drawable/select"/>
         </menu>
     </item>
 </menu>

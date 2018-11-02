@@ -6,9 +6,12 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -65,8 +68,14 @@ public class DetailFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_detail, container, false);
+
+        //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
         textWord = view.findViewById(R.id.textWord);
         btnHear =view.findViewById(R.id.btnHear);
         click();
@@ -199,5 +208,35 @@ public class DetailFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Add your menu entries here
+
+        // Clear current all the menu items
+        menu.clear();
+
+        // Add the new menu items
+        inflater.inflate(R.menu.add, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    // Option menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.flashcard:
+                return true;
+            case R.id.writing:
+                return true;
+            case R.id.speaking:
+                return true;
+            case R.id.test:
+                return true;
+            default:
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 }

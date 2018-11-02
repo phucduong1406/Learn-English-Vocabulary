@@ -56,6 +56,7 @@ public class DictFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         // Lấy danh sách dictionary
         dictList = view.findViewById(R.id.dictList);
         mSource = new ArrayList<String>();
@@ -131,5 +132,6 @@ public class DictFragment extends Fragment {
     public void setOnFragmentListener(FragmentListener listener) {
         this.listener = listener;
     }
+
 
 }

@@ -13,7 +13,10 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("About");
+        //String title = actionBar.getTitle().toString();  //lấy tiêu đề
+        //actionBar.hide();  //ẩn ActionBar
 
     }
 }

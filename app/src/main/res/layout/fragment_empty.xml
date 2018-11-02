@@ -7,11 +7,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginBottom="20dp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="empty_box.json"
         app:lottie_loop="true" />
@@ -20,9 +20,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/animation_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="List is empty" />
+        android:layout_centerVertical="true"
+        android:text="@string/empty_list" />
 
 </RelativeLayout>

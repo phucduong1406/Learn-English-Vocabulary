@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -85,8 +86,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -102,6 +101,9 @@ public class MainActivity extends AppCompatActivity
         emptyFragment = new EmptyFragment();
         topicFragment = new TopicFragment();
 
+
+
+        // Fragment mặc định mở mở app
         goToFragment(bookmarkFragment, true);
 
 
@@ -199,7 +201,8 @@ public class MainActivity extends AppCompatActivity
                 goToFragment(dictFragment, false);
                 break;
             case R.id.nav_topic:
-                goToFragment(topicFragment, false);
+                i = new Intent(MainActivity.this, TopicActivity.class);
+                startActivity(i);
                 break;
             case R.id.nav_star:
                 goToFragment(bookmarkFragment, false);
@@ -207,6 +210,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_recent:
                 i = new Intent(MainActivity.this, TopicActivity.class);
                 startActivity(i);
+                break;
+            case R.id.nav_person:
+                goToFragment(emptyFragment, true);
                 break;
             case R.id.nav_lang:
                 Dialog dialog = new Dialog(MainActivity.this);
@@ -234,6 +240,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         if (!isTop)
             fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);  //chuyển giữa các fragment đẹp hơn
         fragmentTransaction.commit();
     }
 

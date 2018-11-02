@@ -35,4 +35,5 @@
     <string name="rate">Rate</string>
     <string name="help">Help</string>
     <string name="about">About</string>
+    <string name="empty_list">List is empty, add a few words to this list</string>
 </resources>
