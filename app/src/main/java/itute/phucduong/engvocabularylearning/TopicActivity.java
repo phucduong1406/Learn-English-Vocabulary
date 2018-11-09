@@ -20,17 +20,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TopicActivity extends AppCompatActivity {
 
+
+    //FirebaseStorage storage = FirebaseStorage.getInstance();
+
+
     TopicFragment topicFragment;
     List<Topic> mSource = new ArrayList<>();
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
-    //TopicListAdapter adapter;
-
 
     RecyclerView mRecyclerView;
     RecyclerViewAdapter mRcvAdapter;
@@ -39,6 +43,9 @@ public class TopicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topic);
+
+        //StorageReference gsReference = storage.getReferenceFromUrl("gs://engvoclearning.appspot.com");
+
 
         topicFragment = new TopicFragment();
 
@@ -53,49 +60,10 @@ public class TopicActivity extends AppCompatActivity {
         });
 
 
-
-        /** Topic use Listview */
-        /*ListView topicList = findViewById(R.id.topicList);
-        mSource = new ArrayList<Topic>();
-        adapter = new TopicListAdapter(this, mSource);
-
-        topicList.setAdapter(adapter);
-
-        mData.child("Topic").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                Topic topic = dataSnapshot.getValue(Topic.class);
-                mSource.add(new Topic(topic.getName(), topic.getDetail(), "topic_" + topic.getName(), "icon_" + topic.getName()));
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-
-
         /** Topic use RecyclerView */
         mRecyclerView = (RecyclerView) findViewById(R.id.topicList);
         mSource = new ArrayList<Topic>();
-        //adapter = new TopicListAdapter(this, mSource);
-        mRcvAdapter = new RecyclerViewAdapter(mSource);
+        mRcvAdapter = new RecyclerViewAdapter(this, mSource);
 
         mData.child("Topic").addChildEventListener(new ChildEventListener() {
             @Override
@@ -125,8 +93,6 @@ public class TopicActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_topic"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TopicActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/flashcardList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="17dp"
+        android:layout_marginLeft="17dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="110dp"/>
+
+    <ImageView
+        android:id="@+id/btnLoop"
+        android:layout_width="40dp"
+        android:layout_height="45dp"
+        android:layout_alignBottom="@+id/btnPlay"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/btnPre"
+        app:srcCompat="@drawable/ic_loop" />
+
+    <ImageView
+        android:id="@+id/btnPlay"
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="38dp"
+        app:srcCompat="@drawable/ic_play" />
+
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="40dp"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="38dp"
+        android:layout_toEndOf="@+id/btnPlay"
+        app:srcCompat="@drawable/ic_arrow_next" />
+
+    <ImageView
+        android:id="@+id/btnPre"
+        android:layout_width="40dp"
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="38dp"
+        android:layout_toStartOf="@+id/btnPlay"
+        app:srcCompat="@drawable/ic_arrow_back" />
+
+    <ImageView
+        android:id="@+id/btnTime"
+        android:layout_width="40dp"
+        android:layout_height="43dp"
+
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:layout_marginBottom="38dp"
+        android:layout_toEndOf="@+id/btnNext"
+        app:srcCompat="@drawable/ic_hourglass" />
+
+
+</RelativeLayout>

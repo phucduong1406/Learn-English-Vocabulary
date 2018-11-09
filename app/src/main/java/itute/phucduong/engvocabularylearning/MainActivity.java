@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     BookmarkFragment bookmarkFragment;
     DetailFragment detailFragment;
     EmptyFragment emptyFragment;
+    NoInternetFragment noInternetFragment;
     TopicFragment topicFragment;
 
     ImageButton btnHear;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
 
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
         detailFragment = new DetailFragment();
         emptyFragment = new EmptyFragment();
         topicFragment = new TopicFragment();
+        noInternetFragment = new NoInternetFragment();
 
 
 
@@ -208,8 +209,7 @@ public class MainActivity extends AppCompatActivity
                 goToFragment(bookmarkFragment, false);
                 break;
             case R.id.nav_recent:
-                i = new Intent(MainActivity.this, TopicActivity.class);
-                startActivity(i);
+                goToFragment(emptyFragment, true);
                 break;
             case R.id.nav_person:
                 goToFragment(emptyFragment, true);
@@ -218,6 +218,12 @@ public class MainActivity extends AppCompatActivity
                 Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setContentView(R.layout.dialog_language);
                 dialog.show();
+                break;
+            case R.id.nav_rate:
+               
+                break;
+            case R.id.nav_help:
+
                 break;
             case R.id.nav_about:
                 i = new Intent(MainActivity.this, AboutActivity.class);

@@ -19,10 +19,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AboutActivity"
-            android:parentActivityName=".MainActivity"/>
-        <activity android:name=".TopicActivity"
-            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".AboutActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".TopicActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".FlashcradsActivity"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
