@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -26,16 +30,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BookmarkFragment extends Fragment {
 
-    ListView bookmarkList;
-    MenuItem menuSetting;
-
     private FragmentListener listener;  // Declare a variable for this listener in fragment
-    ArrayAdapter<String> adapter;
 
-    private ArrayList<String> mSource = new ArrayList<String>();
+    ListView bookmarkList;
+    ArrayList<Bookmark> mSource = new ArrayList<>();
+    BookmarkAdapter mAdapter;
+    ImageView btnDeleteFW;
 
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
@@ -51,8 +55,27 @@ public class BookmarkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+//        View view = inflater.inflate(R.layout.fragment_bookmark, container, false);
+//        ListView lv = (ListView) view.findViewById(R.id.bookmarkList);
+//
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View arg1,
+//                                    int position, long arg3) {
+//                Toast.makeText(getActivity(), "ABCDEFGHIJKLMNOPQ", Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
+//
+//        return view;
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bookmark, container, false);
+
+
     }
 
     @Override
@@ -62,19 +85,23 @@ public class BookmarkFragment extends Fragment {
         // Notify the fragment that it should participate in options menu handling.
         setHasOptionsMenu(true);
 
+
+
         // Lấy danh sách favorite
         bookmarkList = view.findViewById(R.id.bookmarkList);
-        mSource = new ArrayList<String>();
-        adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, mSource);
-        bookmarkList.setAdapter(adapter);
+        mSource = new ArrayList<Bookmark>();
+
+        mAdapter = new BookmarkAdapter(getActivity(),R.layout.bookmark_item, mSource);
+        bookmarkList.setAdapter(mAdapter);
+
 
         mData.child("Dictionary").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
                 if(dictionary.favorite_word)
-                    mSource.add(dictionary.word);
-                adapter.notifyDataSetChanged();
+                    mSource.add(new Bookmark(dictionary.word, dictionary.mean));
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -98,16 +125,21 @@ public class BookmarkFragment extends Fragment {
             }
         });
 
-        bookmarkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (listener != null)
-                    listener.onItemClick(mSource.get(position));
-            }
-        });
 
-
-
+//        bookmarkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getActivity(), "ABCDEFGHIJKLMNOPQ", Toast.LENGTH_SHORT).show();
+//                if (listener == null) {
+//                    Object o = mSource.get(position);
+//                    Bookmark b = (Bookmark) o;
+//
+//                    Toast.makeText(getActivity(), b.getName(), Toast.LENGTH_SHORT).show();
+//
+//                    listener.onItemClick(b.getName());
+//                }
+//            }
+//        });
 
 
     }
@@ -122,9 +154,6 @@ public class BookmarkFragment extends Fragment {
         super.onDetach();
     }
 
-    public void setOnFragmentListener(FragmentListener listener) {
-        this.listener = listener;
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -141,14 +170,18 @@ public class BookmarkFragment extends Fragment {
     // Option menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent i;
         switch (item.getItemId()) {
             case R.id.flashcard:
-                Intent i = new Intent(getActivity(), FlashcradsActivity.class);
+                i = new Intent(getActivity(), FlashcradsActivity.class);
                 startActivity(i);
                 return true;
             case R.id.writing:
+                i = new Intent(getActivity(), WritingActivity.class);
+                startActivity(i);
                 return true;
             case R.id.speaking:
+
                 return true;
             case R.id.test:
                 return true;
@@ -158,4 +191,9 @@ public class BookmarkFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void setOnFragmentListener(FragmentListener listener) {
+        this.listener = listener;
+    }
+
 }

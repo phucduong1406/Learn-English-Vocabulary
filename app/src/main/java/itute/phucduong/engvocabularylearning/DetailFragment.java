@@ -33,6 +33,7 @@ public class DetailFragment extends Fragment {
     private String value = "";
 
     private TextView textWord;
+    private TextView textPronun;
     private ImageButton btnBookmark, btnVolume;
     ImageButton btnHear;
     private WebView textMean;
@@ -123,6 +124,7 @@ public class DetailFragment extends Fragment {
 
         btnHear = view.findViewById(R.id.btnHear);
         textWord = view.findViewById(R.id.textWord);
+        textPronun = view.findViewById(R.id.textPronun);
         btnBookmark = view.findViewById(R.id.btnBookmark);
         textMean = view.findViewById(R.id.textWordTranslate);
 
@@ -136,6 +138,7 @@ public class DetailFragment extends Fragment {
                 assert dictionary != null;
                 if (value.equals(dictionary.word)) {
                     textWord.setText(value);
+                    textPronun.setText(dictionary.pronun);
                     textMean.loadDataWithBaseURL(null, dictionary.detail, "text/html", "utf-8", null);
 
                     // Set icon
@@ -216,8 +219,8 @@ public class DetailFragment extends Fragment {
         menu.clear();
 
         // Add the new menu items
-        inflater.inflate(R.menu.add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+        //inflater.inflate(R.menu.add, menu);
+        //super.onCreateOptionsMenu(menu, inflater);
     }
 
     // Option menu

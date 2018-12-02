@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         /**
         ** Search: Filter text
         **/

@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.google.firebase.database.ChildEventListener;
@@ -95,8 +96,11 @@ public class DictFragment extends Fragment {
         dictList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (listener != null)
+                if (listener != null) {
                     listener.onItemClick(mSource.get(position));
+                    //Toast.makeText(getActivity(), mSource.get(position),Toast.LENGTH_SHORT).show();  //lấy 1 item
+                    //Toast.makeText(getActivity(), mSource.toString(), Toast.LENGTH_LONG).show();  //lấy list tất cả từ [...]
+                }
             }
         });
 

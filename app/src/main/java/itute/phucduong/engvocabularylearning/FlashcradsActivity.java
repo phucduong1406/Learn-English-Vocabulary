@@ -45,7 +45,7 @@ public class FlashcradsActivity extends AppCompatActivity {
                 Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
                 if(dictionary.favorite_word) {
                     mSource.add(new Flashcard(dictionary.word, flashcard.getPronun(), flashcard.getMean(), "flashcrad_" + flashcard.getName()));
-                    Toast.makeText(FlashcradsActivity.this, "Word: " + flashcard.getName(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(FlashcradsActivity.this, "Word: " + flashcard.getName(), Toast.LENGTH_LONG).show();
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -77,7 +77,7 @@ public class FlashcradsActivity extends AppCompatActivity {
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
 //        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-       mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         mRecyclerView.setAdapter(mAdapter);
     }
 }
