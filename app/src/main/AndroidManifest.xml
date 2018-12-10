@@ -33,7 +33,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".WritingActivity" />
-        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TestActivity" />
+        <activity android:name=".ChangeLanguageActivity"></activity>
     </application>
 
 </manifest>

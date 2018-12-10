@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -30,9 +31,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.localizationactivity.core.LocalizationApplicationDelegate;
+import com.akexorcist.localizationactivity.ui.LocalizationActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -45,14 +50,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
 
     DictFragment dictFragment;
     BookmarkFragment bookmarkFragment;
     DetailFragment detailFragment;
+    RecentFragment recentFragment;
     EmptyFragment emptyFragment;
     NoInternetFragment noInternetFragment;
     TopicFragment topicFragment;
@@ -68,10 +73,15 @@ public class MainActivity extends AppCompatActivity
 
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+
+        /** Multi language **/
 
 
 
@@ -98,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         dictFragment = new DictFragment();
         bookmarkFragment = new BookmarkFragment();
         detailFragment = new DetailFragment();
+        recentFragment = new RecentFragment();
         emptyFragment = new EmptyFragment();
         topicFragment = new TopicFragment();
         noInternetFragment = new NoInternetFragment();
@@ -110,12 +121,62 @@ public class MainActivity extends AppCompatActivity
 
         dictFragment.setOnFragmentListener(new FragmentListener() {
             @Override
-            public void onItemClick(String value) {
+            public void onItemClick(final String value) {
                 goToFragment(DetailFragment.getNewInstance(value), false);
+
+                mData.child("Dictionary").addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        final Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
+
+                        if (dictionary.word == value)
+                            mData.child("Dictionary").child(dictionary.word).child("recent_word").setValue(true);
+
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
 
         bookmarkFragment.setOnFragmentListener(new FragmentListener() {
+            @Override
+            public void onItemClick(String value) {
+                goToFragment(DetailFragment.getNewInstance(value), false);
+                ActionBar actionBar = getSupportActionBar();
+                actionBar.setTitle(R.string.about);
+
+//                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(MainActivity.this, "AHELLO", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+
+            }
+        });
+
+        recentFragment.setOnFragmentListener(new FragmentListener() {
             @Override
             public void onItemClick(String value) {
                 goToFragment(DetailFragment.getNewInstance(value), false);
@@ -137,6 +198,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 dictFragment.filterValue(charSequence.toString());
+                //recentFragment.filterValue(charSequence.toString());
             }
 
             @Override
@@ -208,15 +270,62 @@ public class MainActivity extends AppCompatActivity
                 goToFragment(bookmarkFragment, false);
                 break;
             case R.id.nav_recent:
-                goToFragment(emptyFragment, true);
+                goToFragment(recentFragment, true);
                 break;
             case R.id.nav_person:
                 goToFragment(emptyFragment, true);
                 break;
             case R.id.nav_lang:
-                Dialog dialog = new Dialog(MainActivity.this);
+                final Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setTitle(R.string.languages);
                 dialog.setContentView(R.layout.dialog_language);
+
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+
+                RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroupLang);
+                final RadioButton radioEn = (RadioButton) dialog.findViewById(R.id.radioEn);
+                final RadioButton radioVi = (RadioButton) dialog.findViewById(R.id.radioVi);
+                Button btnOKLang = (Button) dialog.findViewById(R.id.btnOKLang);
+                Button btnCancelLang = (Button) dialog.findViewById(R.id.btnCancelLang);
+
+
+                btnOKLang.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(radioEn.isChecked()) {
+                            Lang("en");
+                            //Toast.makeText(MainActivity.this, radioEn.getText(), Toast.LENGTH_SHORT).show();
+                        }
+                        if(radioVi.isChecked()) {
+                            Lang("vi");
+                            //Toast.makeText(MainActivity.this, radioVi.getText(), Toast.LENGTH_SHORT).show();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                btnCancelLang.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+
+//                int isChecked = radioGroup.getCheckedRadioButtonId();
+//                Toast.makeText(this, "Checked: " + isChecked + radioEn.getText(), Toast.LENGTH_SHORT).show();
+//                if (isChecked == R.id.radioEn) {
+//                    Toast.makeText(this, "En", Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                }
+//                if (isChecked == R.id.radioVi) {
+//                    Toast.makeText(this, "Vi", Toast.LENGTH_SHORT).show();
+//                    dialog.dismiss();
+//                }
+
                 dialog.show();
+
                 break;
             case R.id.nav_rate:
                
@@ -279,5 +388,16 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
+    }
+
+
+    /** Thay đổi ngôn ngữ */
+    public void Lang(String lang) {
+        Locale locale = new Locale(lang);
+        Configuration conf = new Configuration();
+        conf.locale = locale;
+        getBaseContext().getResources().updateConfiguration(conf, getBaseContext().getResources().getDisplayMetrics());
+        Intent i = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(i);
     }
 }

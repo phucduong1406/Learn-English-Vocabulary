@@ -43,10 +43,10 @@ public class WritingActivity extends AppCompatActivity implements TextToSpeech.O
 
     ImageView btnHear;
     TextToSpeech toSpeech;
-    ImageView btnCheck, btnVolWT, imgWT;
-    EditText txtWord;
+    ImageView btnCheck, btnVolWT;
+    public EditText txtWord;
     TextView txtRight;
-    String name;
+     String name;
     int countRight = 0, countWrong = 0;
 
     @Override
@@ -55,11 +55,8 @@ public class WritingActivity extends AppCompatActivity implements TextToSpeech.O
         setContentView(R.layout.activity_writing);
 
         txtWord = (EditText) findViewById(R.id.txtNameWT);
-        btnCheck = (ImageView) findViewById(R.id.btnCheck);
+        btnCheck = (ImageView) findViewById(R.id.btnCheckWT);
         btnVolWT = (ImageView) findViewById(R.id.btnVolWT);
-        imgWT = (ImageView) findViewById(R.id.imgWT);
-        txtRight = (TextView) findViewById(R.id.txtRight);
-
 
 
 //        txtWord.addTextChangedListener(new TextWatcher() {
@@ -122,7 +119,7 @@ public class WritingActivity extends AppCompatActivity implements TextToSpeech.O
                 Writing writing = dataSnapshot.getValue(Writing.class);
                 Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
                 if(dictionary.favorite_word) {
-                    mSource.add(new Writing(dictionary.word, "flashcrad_" + writing.getName()));
+                    mSource.add(new Writing(dictionary.word));
                     name = dictionary.word;
                 }
                 mAdapter.notifyDataSetChanged();

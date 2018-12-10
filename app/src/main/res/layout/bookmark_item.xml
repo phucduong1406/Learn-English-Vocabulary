@@ -48,7 +48,7 @@
         android:src="@drawable/ic_volume" />
 
     <ImageView
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnDeleteFW"
         android:layout_width="22dp"
         android:layout_height="21dp"
         android:src="@drawable/ic_delete" />

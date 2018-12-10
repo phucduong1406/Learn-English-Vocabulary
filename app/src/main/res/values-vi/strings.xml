@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Từ vựng Tiếng Anh</string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="ev">Tiếng Anh - Tiếng Việt</string>
+    <string name="ve">Tiếng Việt - Tiếng Anh</string>
+    <string name="game">Game</string>
+    <string name="select_language">Chọn ngôn ngữ hiển thị:</string>
+    <string name="english">Tiếng Anh</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="search">tìm kiếm</string>
+    <string name="speech_prompt">Hãy nói gi đó…</string>
+    <string name="review">Xem lại</string>
+    <string name="action_practice">Thực hành</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="topic">Chủ đề</string>
+    <string name="dictionary">Từ điển</string>
+    <string name="favorite_words">Từ đánh dấu</string>
+    <string name="recent_words">Từ tìm kiếm gần đây</string>
+    <string name="my_words">Từ của tôi</string>
+    <string name="settings">CÀI ĐẶT</string>
+    <string name="remind">Nhắc nhở</string>
+    <string name="languages">Ngôn ngữ</string>
+    <string name="network">MẠNG</string>
+    <string name="rate">Xếp hạng</string>
+    <string name="help">Hướng dẫn</string>
+    <string name="about">Thông tin</string>
+    <string name="empty_list">Danh sách rỗng</string>
+</resources>

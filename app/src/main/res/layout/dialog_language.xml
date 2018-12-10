@@ -13,25 +13,52 @@
         android:textColor="#000"
         android:textSize="16sp" />
 
+
+
     <RadioGroup
+        android:id="@+id/radioGroupLang"
         android:layout_below="@+id/textSelectLang"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RadioButton
-            android:id="@+id/radioEng"
+            android:id="@+id/radioEn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@string/english" />
 
         <RadioButton
-            android:id="@+id/radioVie"
+            android:id="@+id/radioVi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="@string/vietnamese" />
-
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radioGroupLang"
+        android:layout_alignEnd="@+id/radioGroupLang"
+        android:layout_marginTop="@dimen/dp10">
+
+        <Button
+            android:id="@+id/btnOKLang"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <Button
+            android:id="@+id/btnCancelLang"
+            style="@android:style/Widget.Material.Light.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp5"
+            android:text="Cancel"
+            android:textColor="@color/colorRed" />
+    </LinearLayout>
 
 </RelativeLayout>

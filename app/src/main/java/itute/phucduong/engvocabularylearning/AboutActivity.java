@@ -14,7 +14,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("About");
+        actionBar.setTitle(R.string.about);
         //String title = actionBar.getTitle().toString();  //lấy tiêu đề
         //actionBar.hide();  //ẩn ActionBar
 

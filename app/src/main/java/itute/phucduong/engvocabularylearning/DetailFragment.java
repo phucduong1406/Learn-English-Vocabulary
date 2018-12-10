@@ -78,7 +78,7 @@ public class DetailFragment extends Fragment {
 
 
         textWord = view.findViewById(R.id.textWord);
-        btnHear =view.findViewById(R.id.btnHear);
+        btnHear = view.findViewById(R.id.btnHear);
         click();
         return view;
     }
