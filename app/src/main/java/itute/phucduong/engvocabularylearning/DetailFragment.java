@@ -1,7 +1,10 @@
 package itute.phucduong.engvocabularylearning;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +30,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.RECEIVER_VISIBLE_TO_INSTANT_APPS;
 
 
 public class DetailFragment extends Fragment {
@@ -41,6 +50,8 @@ public class DetailFragment extends Fragment {
     private int mDicType;
 
     TextToSpeech toSpeech;
+    private static final int REQUEST_CODE = 111;
+
 
 
     private FragmentListener listener;  // Declare a variable for this listener in fragment
@@ -197,7 +208,26 @@ public class DetailFragment extends Fragment {
 
 
 
+
+
+
+        final ImageButton speak = view.findViewById(R.id.btnVoice);
+        String txtSpeechInput;
+        speak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
+
+
+
     }
+
+
+
+
+
 
 
     @Override
@@ -242,4 +272,56 @@ public class DetailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
+
+    /**
+     * Showing google speech input dialog
+     * */
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                getString(R.string.speech_prompt));
+        try {
+            startActivityForResult(intent, REQUEST_CODE);
+        } catch (ActivityNotFoundException a) {
+            Toast.makeText(getActivity(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+    /**
+     * Receiving speech input
+     * */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQUEST_CODE: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+                    if (result.get(0).equals(textWord.getText().toString()))
+                        Toast.makeText(getActivity(), R.string.speech_right, Toast.LENGTH_SHORT).show();
+
+                    if (!result.get(0).equals(textWord.getText().toString()))
+                        Toast.makeText(getActivity(), R.string.speech_wrong, Toast.LENGTH_SHORT).show();
+
+                }
+                break;
+            }
+
+        }
+    }
+
 }
+
+
+

@@ -30,6 +30,7 @@
         <menu>
             <item
                 android:id="@+id/nav_remind"
+                android:checkable="true"
                 android:icon="@drawable/ic_calendar"
                 android:title="@string/remind" />
             <item
@@ -43,10 +44,14 @@
         <menu>
             <item
                 android:id="@+id/nav_rate"
+                android:checkable="false"
+                android:enabled="false"
                 android:icon="@drawable/ic_like"
                 android:title="@string/rate" />
             <item
                 android:id="@+id/nav_help"
+                android:checkable="false"
+                android:enabled="false"
                 android:icon="@drawable/ic_question"
                 android:title="@string/help" />
             <item

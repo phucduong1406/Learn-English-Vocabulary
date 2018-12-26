@@ -30,4 +30,9 @@
     <string name="help">Help</string>
     <string name="about">About</string>
     <string name="empty_list">List is empty, add a few words to this list</string>
+    <string name="select_time">Input reminder time (minute(s)):</string>
+    <string name="removed">"Deleted: "</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\\\'t support speech input</string>
+    <string name="speech_right">RIght</string>
+    <string name="speech_wrong">Wrong</string>
 </resources>

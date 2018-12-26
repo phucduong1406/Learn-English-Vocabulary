@@ -28,4 +28,6 @@
     <string name="help">Hướng dẫn</string>
     <string name="about">Thông tin</string>
     <string name="empty_list">Danh sách rỗng</string>
+    <string name="removed">"Đã xóa: "</string>
+    <string name="select_time">Nhập thời gian (phút):</string>
 </resources>

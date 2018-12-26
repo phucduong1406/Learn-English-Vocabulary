@@ -51,7 +51,8 @@
             android:layout_gravity="center_vertical"
             android:background="?actionBarItemBackground"
             android:gravity="fill_vertical"
-            android:src="@drawable/ic_voice_black" />
+            android:src="@drawable/ic_voice_black"
+            android:onClick="speakButtonClicked"/>
 
         <ImageButton
             android:id="@+id/btnBookmark"

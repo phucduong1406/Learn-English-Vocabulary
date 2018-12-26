@@ -47,12 +47,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.name.setText(topic.getName());
         holder.detail.setText(topic.getDetail());
 
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/engvoclearning.appspot.com/o/topic%2F" + topic.getImage() + ".png?alt=media").into(holder.image);
-        Log.i("CheckName", "::"+ topic.getImage());
+        //Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/engvoclearning.appspot.com/o/topic%2F" + topic.getImage() + ".png?alt=media").into(holder.image);
 
 
-//        int imageId = this.getMipmapImageIdByName(topic.getImage());
-//        holder.image.setImageResource(imageId);
+
+        //Log.i("CheckName", "::"+ topic.getImage());
+
+
+        int imageId = this.getMipmapImageIdByName(topic.getImage());
+        holder.image.setImageResource(imageId);
 
         int iconId = this.getMipmapIconIdByName(topic.getIcon());
         holder.icon.setImageResource(iconId);

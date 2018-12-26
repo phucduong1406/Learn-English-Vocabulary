@@ -1,5 +1,5 @@
 package itute.phucduong.engvocabularylearning.listener;
 
-public interface BookAdapterListener {
+public interface BookmarkAdapterListener {
     void onItemClick(String name);
 }

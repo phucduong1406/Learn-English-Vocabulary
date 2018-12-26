@@ -1,5 +1,6 @@
 package itute.phucduong.engvocabularylearning;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -15,6 +16,7 @@ import android.text.Editable;
 import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,16 +99,19 @@ public class WritingActivity extends AppCompatActivity implements TextToSpeech.O
 //            }
 //        });
 
-        toSpeech = new TextToSpeech(this, this);
-        btnHear = (ImageView) findViewById(R.id.bgRight);
 
-        btnHear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                speakOut();
-                Toast.makeText(WritingActivity.this, "test", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+
+        toSpeech = new TextToSpeech(this, this);
+        btnHear = (ImageView) findViewById(R.id.btnVolWT);
+
+//        btnHear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                speakOut();
+//                Toast.makeText(WritingActivity.this, "test", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.writingList);
         mSource = new ArrayList<Writing>();

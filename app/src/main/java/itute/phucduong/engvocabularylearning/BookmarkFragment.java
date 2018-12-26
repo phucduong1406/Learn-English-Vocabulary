@@ -3,26 +3,19 @@ package itute.phucduong.engvocabularylearning;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -32,11 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
-import itute.phucduong.engvocabularylearning.listener.BookAdapterListener;
+import itute.phucduong.engvocabularylearning.listener.BookmarkAdapterListener;
+import itute.phucduong.engvocabularylearning.listener.PronunClick;
+import itute.phucduong.engvocabularylearning.listener.RemoveClick;
 
-public class BookmarkFragment extends Fragment implements BookAdapterListener {
+public class BookmarkFragment extends Fragment implements BookmarkAdapterListener, RemoveClick, PronunClick {
 
     private FragmentListener listener;  // Declare a variable for this listener in fragment
 
@@ -44,6 +39,8 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
     ArrayList<Bookmark> mSource = new ArrayList<>();
     BookmarkAdapter mAdapter;
     ImageView btnDeleteFW;
+    TextToSpeech toSpeech;
+
 
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
@@ -72,6 +69,9 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
         // Notify the fragment that it should participate in options menu handling.
         setHasOptionsMenu(true);
 
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);  // lưu dữ liệu offline của firebase
+
+
 
 
         btnDeleteFW = view.findViewById(R.id.btnDeleteFW);
@@ -81,7 +81,7 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
         bookmarkList = view.findViewById(R.id.bookmarkList);
         mSource = new ArrayList<Bookmark>();
 
-        mAdapter = new BookmarkAdapter(getActivity(),R.layout.bookmark_item, mSource,this);
+        mAdapter = new BookmarkAdapter(getActivity(),R.layout.bookmark_item, mSource,this, this, this);
         bookmarkList.setAdapter(mAdapter);
 
 
@@ -116,21 +116,6 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
         });
 
 
-//        bookmarkList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getActivity(), "ABC", Toast.LENGTH_SHORT).show();
-//                if (listener == null) {
-//                    Object o = mSource.get(position);
-//                    Bookmark b = (Bookmark) o;
-//
-//                    Toast.makeText(getActivity(), b.getName(), Toast.LENGTH_SHORT).show();
-//
-//                    listener.onItemClick(b.getName());
-//                }
-//            }
-//        });
-
 
     }
 
@@ -160,6 +145,8 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
+
     // Option menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,26 +156,20 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
                 i = new Intent(getActivity(), FlashcradsActivity.class);
                 startActivity(i);
                 return true;
-            case R.id.writing:
-                i = new Intent(getActivity(), WritingActivity.class);
-                startActivity(i);
-                return true;
-            case R.id.speaking:
-
-                return true;
             case R.id.test:
                 return true;
             default:
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+
     public void setOnFragmentListener(FragmentListener listener) {
         this.listener = listener;
     }
+
 
     @Override
     public void onItemClick(String name) {
@@ -197,4 +178,56 @@ public class BookmarkFragment extends Fragment implements BookAdapterListener {
         }
     }
 
+
+    @Override
+    public void RemoveClick(final String name) {
+        mData.child("Dictionary").addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                final Dictionary dictionary = dataSnapshot.getValue(Dictionary.class);
+                if (dictionary.word == name)
+                    mData.child("Dictionary").child(dictionary.word).child("favorite_word").setValue(false);
+                mAdapter.notifyDataSetChanged();
+
+
+                // Reload current fragment
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void PronunClick(final String name) {
+        toSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i != TextToSpeech.ERROR) {
+                    toSpeech.setLanguage(Locale.ENGLISH);
+                    toSpeech.speak(name, TextToSpeech.QUEUE_FLUSH, null);
+                }
+            }
+        });
+    }
 }

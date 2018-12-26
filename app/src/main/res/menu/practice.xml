@@ -11,23 +11,11 @@
             <item
                 android:id="@+id/flashcard"
                 android:title="Flash card"
-                app:showAsAction="never"
-                android:icon="@drawable/image"/>
-            <item
-                android:id="@+id/writing"
-                android:title="Writing"
-                app:showAsAction="never"
-                android:icon="@drawable/document"/>
-            <item
-                android:id="@+id/speaking"
-                android:title="Speaking"
-                app:showAsAction="never"
-                android:icon="@drawable/listen"/>
+                app:showAsAction="never" />
             <item
                 android:id="@+id/test"
                 android:title="Test"
-                app:showAsAction="never"
-                android:icon="@drawable/select"/>
+                app:showAsAction="never" />
         </menu>
     </item>
 </menu>

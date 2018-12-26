@@ -38,6 +38,8 @@
                     android:layout_marginRight="0dp"
                     android:background="@drawable/button_search"
                     android:drawableStart="@drawable/ic_search"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:hint="@string/search"
                     android:paddingLeft="10dp"
                     android:paddingRight="30dp"

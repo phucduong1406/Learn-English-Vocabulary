@@ -1,6 +1,11 @@
 package itute.phucduong.engvocabularylearning;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +20,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -33,6 +39,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +54,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,21 +82,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DatabaseReference mData = FirebaseDatabase.getInstance().getReference();
 
 
+
+    public int rtime = 1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
-
-        /** Multi language **/
-
-
 
         /**
          * Push database
         Dictionary dictionary = new Dictionary("assurance","sự chắc chắn","sự chắc chắn","",false,false,false);
         mData.child("Dictionary").push().setValue(dictionary);*/
+
 
 
         // Add the button that opens the navigation drawer
@@ -163,13 +170,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onItemClick(String value) {
                 goToFragment(DetailFragment.getNewInstance(value), false);
-                ActionBar actionBar = getSupportActionBar();
-                actionBar.setTitle(R.string.about);
+
+//                ActionBar actionBar = getSupportActionBar();
 
 //                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View v) {
-//                        Toast.makeText(MainActivity.this, "AHELLO", Toast.LENGTH_SHORT).show();
+//
 //                    }
 //                });
 
@@ -198,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 dictFragment.filterValue(charSequence.toString());
-                //recentFragment.filterValue(charSequence.toString());
             }
 
             @Override
@@ -258,37 +264,63 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         Intent i;
+        final Dialog dialog = new Dialog(MainActivity.this);
         switch (item.getItemId()) {
             case R.id.nav_dict:
                 goToFragment(dictFragment, false);
                 break;
+
             case R.id.nav_topic:
                 i = new Intent(MainActivity.this, TopicActivity.class);
                 startActivity(i);
                 break;
+
             case R.id.nav_star:
                 goToFragment(bookmarkFragment, false);
                 break;
+
             case R.id.nav_recent:
                 goToFragment(recentFragment, true);
                 break;
+
             case R.id.nav_person:
                 goToFragment(emptyFragment, true);
                 break;
+
+            case R.id.nav_remind:
+                dialog.setContentView(R.layout.dialog_remind);
+                Button btnOKRemind = (Button) dialog.findViewById(R.id.btnOKRemind);
+                Button btnCancelRemind = (Button) dialog.findViewById(R.id.btnCancelRemind);
+                btnOKRemind.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        AlarmUtils.create(MainActivity.this);
+
+                        dialog.dismiss();
+                    }
+                });
+
+                btnCancelRemind.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+                break;
+
             case R.id.nav_lang:
-                final Dialog dialog = new Dialog(MainActivity.this);
                 dialog.setTitle(R.string.languages);
                 dialog.setContentView(R.layout.dialog_language);
-
-                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;  // Animation dialog
 
                 RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroupLang);
                 final RadioButton radioEn = (RadioButton) dialog.findViewById(R.id.radioEn);
                 final RadioButton radioVi = (RadioButton) dialog.findViewById(R.id.radioVi);
                 Button btnOKLang = (Button) dialog.findViewById(R.id.btnOKLang);
                 Button btnCancelLang = (Button) dialog.findViewById(R.id.btnCancelLang);
-
 
                 btnOKLang.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -360,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    /** The function was performed on 16/9/2018 by Phuc Duong */
+    /** Voice search */
 
     // Handle the action of the button being clicked
     public void speakButtonClicked(View v)
@@ -391,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    /** Thay đổi ngôn ngữ */
+    /** Change language */
     public void Lang(String lang) {
         Locale locale = new Locale(lang);
         Configuration conf = new Configuration();

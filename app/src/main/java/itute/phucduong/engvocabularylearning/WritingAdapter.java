@@ -28,6 +28,9 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClick
     public TextView txtPosWT;
 
 
+
+
+
     private ItemClickListener itemClickListener;
 
     public RecyclerViewHolder(View itemView) {
@@ -38,6 +41,7 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         txtPosWT = (TextView) itemView.findViewById(R.id.txtPosWT);
 
         btnCheckWT.setOnClickListener(this);
+        txtNameWT.setOnClickListener(this);
         //btnVolWT.setOnClickListener(this);
         //itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
@@ -46,7 +50,6 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClick
     public void setItemClickListener(ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -65,6 +68,8 @@ public class WritingAdapter extends RecyclerView.Adapter<RecyclerViewHolder> imp
     private List<Writing> data = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private Context context;
+
+    private View view;
 
     TextToSpeech toSpeech;
     String name;
@@ -96,13 +101,15 @@ public class WritingAdapter extends RecyclerView.Adapter<RecyclerViewHolder> imp
 
 
 
+
+
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 if(isLongClick)
                     Toast.makeText(context, "Long Click: "+ data.get(position), Toast.LENGTH_SHORT).show();
                 else {
-                    Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, name + "A", Toast.LENGTH_SHORT).show();
 
 
                     if(writing.getName() == name) {
@@ -116,6 +123,10 @@ public class WritingAdapter extends RecyclerView.Adapter<RecyclerViewHolder> imp
                 }
             }
         });
+
+
+
+
     }
 
 
